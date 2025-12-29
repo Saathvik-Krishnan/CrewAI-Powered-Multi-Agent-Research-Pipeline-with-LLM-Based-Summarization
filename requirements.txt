@@ -1,0 +1,8 @@
+crewai
+tavily-python
+google-genai
+python-dotenv
+requests
+beautifulsoup4
+lxml
+litellm
