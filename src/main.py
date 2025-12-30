@@ -7,6 +7,15 @@ from src.memory_store import save_memory
 from src.agents import build_research_agent, build_summary_agent
 from datetime import datetime
 
+import sys
+
+# Force UTF-8 output in Windows terminals (prevents emoji crash)
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 def build_evidence(topic: str) -> str:
     sources = tavily_web_search(topic, max_results=5)
@@ -74,7 +83,7 @@ def main():
         "summary_preview": summary[:1200]
     })
 
-    print("\n[3/3] Done ✅")
+    print("\n[3/3] Done ")
     print(f"Report saved: {report_path}")
     print("Memory saved: memory/memory.json")
 
