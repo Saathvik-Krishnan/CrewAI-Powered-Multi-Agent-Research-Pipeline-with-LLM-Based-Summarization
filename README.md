@@ -1,198 +1,148 @@
+# CrewAI-Powered-Multi-Agent-Research-Pipeline-with-LLM-Based-Summarization
 
-#  CrewAI-Powered-Multi-Agent-Research-Pipeline-with-LLM-Based-Summarization
+## Project Overview
 
-A Python-based multi-agent AI system that performs **source-grounded research and executive summarization** using autonomous agents. The system retrieves real-time web evidence, validates it, and generates a structured executive summary with citations.
+This project is an end-to-end **AI-powered research assistant** that uses **multi-agent collaboration** to gather evidence from the web, validate sources, and generate an **executive-level summary**.
+It demonstrates how **agentic AI workflows** can autonomously research, reason, and synthesize information using modern large language models.
 
----
+The system supports both:
 
-##  Project Overview
-
-This project demonstrates how **multiple AI agents** can collaborate to complete a research task end-to-end:
-
-1. **Research Agent**
-
-   * Gathers and validates evidence from real-world sources using web search
-   * Ensures factual accuracy and source attribution
-
-2. **Summary Agent**
-
-   * Produces an executive summary strictly based on the collected evidence
-   * Avoids hallucination by design
-
-The system runs locally in VS Code and produces:
-
-* A **Markdown research report**
-* A **persistent memory file** for future runs
+* A **Command-Line Interface (CLI)** workflow
+* An **Interactive Web Interface** built with Streamlit
 
 ---
 
-##  Architecture (High Level)
+## Key Features
 
-```
+* Automated web research using **Tavily Search API**
+* Multi-agent orchestration using **CrewAI**
+* **Research Agent** for evidence collection and validation
+* **Summary Agent** for executive summary generation (strictly evidence-based)
+* **Google Gemini LLM** integration via LiteLLM
+* Interactive frontend using **Streamlit**
+* Markdown-style reports saved locally
+* Persistent local memory storage (JSON)
+
+---
+
+## System Architecture (High-Level Flow)
+
 User Input
-   ↓
-Python Orchestrator (main.py)
-   ↓
-CrewAI (Multi-Agent Execution)
-   ├── Research Agent → Tavily Search API
-   └── Summary Agent → Google Gemini (via LiteLLM)
-   ↓
-Outputs (Markdown Report)
-Memory (JSON)
-```
+→ Streamlit UI or CLI
+→ CrewAI Orchestrator
+→ Research Agent (collects & validates evidence)
+→ Summary Agent (generates executive summary)
+→ Outputs saved locally (report + memory)
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
-### Core Language
+### Frontend
 
-* **Python 3.11**
+* Streamlit
 
-### AI & Agents
+### Backend & Orchestration
 
-* **CrewAI** – Multi-agent orchestration
-* **Google Gemini (Flash / 2.x)** – LLM for reasoning and summarization
-* **LiteLLM** – LLM abstraction layer
+* Python 3.10+
+* CrewAI
+* LiteLLM
 
-### Search & Retrieval
+### LLM & APIs
 
-* **Tavily API (Free Tier)** – Real-time web search with citations
+* Google Gemini API
+* Tavily Search API
 
-### Configuration & Environment
+### Storage
 
-* **python-dotenv** – Environment variable management
-* **Python venv** – Dependency isolation
-
-### Data & Outputs
-
-* **Markdown (`.md`)** – Final research report
-* **JSON** – Persistent agent memory
-
-### Tools
-
-* **VS Code**
-* **PowerShell (Windows)**
+* Local Markdown reports
+* Local JSON memory files
 
 ---
 
-##  Project Structure
+## Project Structure
 
-```
-AI_agent_proj/
+AI_agent_proj
+├── src
+│   ├── main.py              – CLI pipeline runner
+│   ├── agents.py            – CrewAI agent definitions
+│   ├── tasks.py             – Task definitions
+│   ├── config.py            – Environment & model configuration
 │
-├── src/
-│   ├── main.py              # Entry point and orchestration
-│   ├── agents.py            # Research & Summary agents
-│   ├── tools/
-│   │   └── tavily_search.py # Tavily integration
-│   └── config.py            # Environment config
+├── app.py                   – Streamlit web application
+├── outputs
+│   └── report.md            – Generated research reports
+├── memory
+│   └── memory.json          – Persistent agent memory
 │
-├── outputs/
-│   └── report.md            # Final generated report
-│
-├── memory/
-│   └── memory.json          # Persistent agent memory
-│
-├── .env                     # API keys (not committed)
-├── .env.sample              # Environment template
 ├── requirements.txt
+├── .env.sample
 └── README.md
-```
 
 ---
 
-##  Setup Instructions
+## Environment Setup
 
-### 1. Clone the Repository
+### Step 1: Create a Virtual Environment
 
-```bash
-git clone <repo-url>
-cd AI_agent_proj
-```
-
-### 2. Create & Activate Virtual Environment
-
-```bash
 python -m venv .venv
+
+Activate it:
+
+**Windows**
 .venv\Scripts\activate
-```
 
-### 3. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
+**macOS / Linux**
+source .venv/bin/activate
 
 ---
 
-##  Environment Configuration
+### Step 2: Install Dependencies
 
-### `.env.sample` (add this file to the repo)
+pip install -r requirements.txt
 
-Create a file named **`.env.sample`** with the following contents:
+---
 
-```env
+### Step 3: Configure Environment Variables
+
+Create a `.env` file using the following template:
+
 GEMINI_API_KEY="YOUR GEMINI API KEY"
 GEMINI_MODEL=gemini/gemini-flash-latest
 TAVILY_API_KEY="YOUR TAVILY API KEY"
-```
-
-### `.env` (local only)
-
-Copy `.env.sample` → `.env` and replace the values with your actual keys.
-
->  **Do not commit `.env`** — it contains sensitive credentials.
 
 ---
 
-##  How to Run
+## How to Run the Project
 
-```bash
+### Option 1: Command-Line Interface (CLI)
+
 python -m src.main
-```
 
-You will be prompted to enter a research topic:
-
-```
-Enter a topic to research: AI agents in supply chain management
-```
+* Prompts the user to enter a research topic
+* Runs the multi-agent pipeline
+* Saves the final report in the `outputs` folder
 
 ---
 
-##  Output
+### Option 2: Web Interface (Recommended)
 
-After execution:
+streamlit run app.py
 
-*  **Research report** → `outputs/report.md`
-*  **Memory file** → `memory/memory.json`
+* Launches a browser-based UI
+* Accepts topic input interactively
+* Displays execution logs and results in real time
 
-Both agents must complete successfully for the report to be generated.
 
----
+## API Quota Notes
 
-##  Key Design Decisions
+* Google Gemini free tier has **daily request limits**
+* Multi-agent pipelines can reach the quota quickly
+* To avoid issues:
 
-* No traditional backend server (FastAPI/Flask not required)
-* Python acts as the orchestration backend
-* Emphasis on **source-grounded AI** (no hallucinations)
-* Modular agent design for easy extensibility
+  * Avoid repeated rapid executions
+  * Reuse generated outputs when possible
+  * Enable billing for higher limits (optional)
 
----
-
-##  Possible Extensions
-
-* Add FastAPI to expose the system as a REST API
-* Store memory in a database (Postgres / MongoDB)
-* Add a frontend (React / Streamlit)
-* Add more specialized agents (Fact Checker, Risk Analyzer)
-
----
-
-##  License
-
-This project is for **educational and evaluation purposes**.
-
----
 
 
