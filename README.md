@@ -62,6 +62,7 @@ User Input
 
 ## Project Structure
 
+```
 AI_agent_proj
 ├── src
 │   ├── main.py              – CLI pipeline runner
@@ -78,6 +79,7 @@ AI_agent_proj
 ├── requirements.txt
 ├── .env.sample
 └── README.md
+```
 
 ---
 
