@@ -117,7 +117,7 @@ TAVILY_API_KEY="YOUR TAVILY API KEY"
 
 ## How to Run the Project
 
-### Option 1: Command-Line Interface (CLI)
+### 1: Command-Line Interface (CLI)
 
 python -m src.main
 
@@ -127,7 +127,7 @@ python -m src.main
 
 ---
 
-### Option 2: Web Interface (Recommended)
+### 2: Web Interface 
 
 streamlit run app.py
 
